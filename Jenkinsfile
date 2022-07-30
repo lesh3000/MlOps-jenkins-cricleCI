@@ -3,7 +3,6 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-
                 sh 'aws s3 ls'
             }
         }
