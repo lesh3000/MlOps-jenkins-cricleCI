@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-                sh '/usr/local/bin/aws --version'
+                sh 'aws --version'
             }
         }
     }
