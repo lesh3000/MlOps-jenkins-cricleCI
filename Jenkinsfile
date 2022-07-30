@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-                sh 'aws s3 ls'
+                sh '/usr/local/bin/aws s3 ls'
             }
         }
     }
