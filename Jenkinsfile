@@ -1,11 +1,9 @@
 pipeline {
-    agent { dockerfile true }
+    agent any
     stages {
-        stage('Test') {
-            steps {
-                sh 'node --version'
-                sh 'svn --version'
-            }
-        }
+        stage('Build image') {
+
+            app = docker.build("jkakjaka/test")
+       }
     }
 }
