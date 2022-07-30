@@ -7,7 +7,8 @@ pipeline {
   stages {
     stage('Cloning Git') {
       steps {
-        scm
+        git([url: 'https://github.com/lesh3000/proj5.git', branch: 'main'])
+
       }
     }
     stage('Building image') {
