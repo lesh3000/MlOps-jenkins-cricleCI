@@ -1,8 +1,11 @@
-version: 2
+version: 2.1
+
+orbs:
+  docker: circleci/docker@x.y.z
 jobs:
   build:
     docker:
-    # Use the same Docker base as the project
+      # Use the same Docker base as the project
       - image: python:3.7.3-stretch
     working_directory: ~/proj5
     steps:
@@ -30,3 +33,18 @@ jobs:
           command: |
             . venv/bin/activate
             make -i lint
+
+  check-and-build-only:
+    executor: docker/machine
+    steps:
+      - checkout
+      - docker/check
+      - docker/build:
+          image: dmitry/proj5
+workflows:
+  build:
+    jobs:
+      -build
+  build-docker-image-only:
+    jobs:
+      - check-and-build-only
