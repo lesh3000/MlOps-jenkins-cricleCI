@@ -44,10 +44,17 @@ jobs:
         aws_auth:
           aws_access_key_id: ASIAXULVIJNCI6MI5CNY  # can specify string literal values
           aws_secret_access_key: SDOvdiTi6EEIbXgZR0ZrHAbfg3zaiIbQpY92nGpE  # or project UI envar reference
+    steps:
+      - run:
+          name: "Every Day Tests"
+          command: "testing...."
+      - run:
+          name: "Deploy to Staging Infrastructure"
+          command: "something something darkside.... cli"
 workflows:
   build:
     jobs:
       - build
-  build-docker-image-only:
+  pull:
     jobs:
-      - check-and-build-only
+      - pull
