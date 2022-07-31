@@ -40,7 +40,7 @@ jobs:
 
   pull:
     docker:
-      - image: <<pipeline.parameters.accountid>>.dkr.ecr.<<pipeline.parameters.region>>.amazonaws.com/train
+      - image: 524768791364.dkr.ecr.us-west-1.amazonaws.com/train
         aws_auth:
           aws_access_key_id: ASIAXULVIJNCI6MI5CNY
           aws_secret_access_key: SDOvdiTi6EEIbXgZR0ZrHAbfg3zaiIbQpY92nGpE
