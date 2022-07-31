@@ -1,7 +1,11 @@
 version: 2.1
-
-orbs:
-  docker: circleci/docker@2.1.2
+parameters:
+  accountid:
+    type: string
+    default: "524768791364"
+  region:
+    type: string
+    default: "us-west-1"
 jobs:
   build:
     docker:
@@ -34,13 +38,12 @@ jobs:
             . venv/bin/activate
             make -i lint
 
-  check-and-build-only:
-    executor: docker/machine
-    steps:
-      - checkout
-      - docker/check
-      - docker/build:
-          image: dmitry/proj5
+  pull:
+    docker:
+      - image: << pipeline.parameters.accountid >>.dkr.ecr.<< pipeline.parameters.region >>.amazonaws.com/train
+        aws_auth:
+          aws_access_key_id: ASIAXULVIJNCI6MI5CNY  # can specify string literal values
+          aws_secret_access_key: SDOvdiTi6EEIbXgZR0ZrHAbfg3zaiIbQpY92nGpE  # or project UI envar reference
 workflows:
   build:
     jobs:
