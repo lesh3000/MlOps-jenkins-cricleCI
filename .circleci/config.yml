@@ -48,7 +48,7 @@ jobs:
       - run:
           name: "Every Day Tests"
           command: |
-            apk-get add docker-cli
+            sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
             docker run -it --rm dmitrylesh/train preprocessing
 workflows:
 #  build:
