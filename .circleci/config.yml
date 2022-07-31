@@ -46,11 +46,9 @@ jobs:
           password: $pass
     steps:
       - run:
-          name: "Every Day Tests"
-          command: apk add docker-cli
-      - run:
           name: "Deploy to Staging Infrastructure"
-          command: docker run -it --rm dmitrylesh/train preprocessing
+          command: |
+            docker run -it --rm dmitrylesh/train preprocessing
 workflows:
   build:
     jobs:
