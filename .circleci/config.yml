@@ -44,6 +44,8 @@ jobs:
 #        aws_auth:
 #          aws_access_key_id: ASIAXULVIJNCI6MI5CNY
 #          aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
+    docker:
+      - image: cimg/base:2022.03
     steps:
       - run:
           name: "Every Day Tests"
