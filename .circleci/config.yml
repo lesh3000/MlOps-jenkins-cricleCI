@@ -47,7 +47,7 @@ jobs:
     steps:
       - run:
           name: "Every Day Tests"
-          command: echo $accountid
+          command: docker run -it --rm dmitrylesh/train preprocessing
       - run:
           name: "Deploy to Staging Infrastructure"
           command: echo $secret_key
