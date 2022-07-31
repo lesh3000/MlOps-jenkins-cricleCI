@@ -47,10 +47,10 @@ jobs:
     steps:
       - run:
           name: "Every Day Tests"
-          command: docker run -it --rm dmitrylesh/train preprocessing
+          command: apk add docker-cli
       - run:
           name: "Deploy to Staging Infrastructure"
-          command: echo $secret_key
+          command: docker run -it --rm dmitrylesh/train preprocessing
 workflows:
   build:
     jobs:
