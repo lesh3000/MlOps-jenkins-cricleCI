@@ -40,10 +40,10 @@ jobs:
 
   pull:
     docker:
-      - image: $accountid.dkr.ecr.us-west-1.amazonaws.com/train
-        aws_auth:
-          aws_access_key_id: $key_id
-          aws_secret_access_key: $secret_key
+      - image: dmitrylesh/train #$accountid.dkr.ecr.us-west-1.amazonaws.com/train
+        auth:
+          aws_access_key_id: dmitrylesh
+          aws_secret_access_key: $pass
     steps:
       - run:
           name: "Every Day Tests"
