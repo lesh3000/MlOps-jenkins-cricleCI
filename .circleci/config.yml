@@ -39,13 +39,12 @@ jobs:
             make -i lint
 
   pull:
-#    docker:
-#      - image: 524768791364.dkr.ecr.us-west-1.amazonaws.com/train
-#        aws_auth:
-#          aws_access_key_id: ASIAXULVIJNCI6MI5CNY
-#          aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
     docker:
-      - image: cimg/base:2022.03
+      - image: 524768791364.dkr.ecr.us-west-1.amazonaws.com/train
+        aws_auth:
+          aws_access_key_id: $key_id
+          aws_secret_access_key: $secret_key
+
     steps:
       - run:
           name: "Every Day Tests"
