@@ -12,5 +12,5 @@ echo $r
 #aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${account}.dkr.ecr.${region}.amazonaws.com
 #docker push ${account}.dkr.ecr.${region}.amazonaws.com/train
 docker tag ${r} dmitrylesh/train:latest
-docker login
+docker login --password="${pass}" --login=dmitrylesh
 docker push dmitrylesh/train:latest
