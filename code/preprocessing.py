@@ -7,6 +7,8 @@ from sklearn.model_selection import StratifiedKFold, cross_val_score
 from sklearn.linear_model import LogisticRegression
 import boto3
 
+print("here")
+print(os.environ['key_id'])
 session = boto3.Session(
     aws_access_key_id=os.environ['key_id'],
     aws_secret_access_key=os.environ['secret_key'],

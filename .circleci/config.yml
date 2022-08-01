@@ -60,10 +60,12 @@ jobs:
       - run:
           name: "do all"
           command: |
-            export key_id_=$key_id
-            echo $key_id_
-  #          docker pull dmitrylesh/train
-  #          docker run --rm -it dmitrylesh/train
+            export key_id=$key_id
+            echo $key_id
+            export secret_key=$key_id
+            echo $secret_key
+            docker pull dmitrylesh/train
+            docker run --rm -it dmitrylesh/train
 
 workflows:
 #  build:
@@ -72,4 +74,4 @@ workflows:
   train:
     jobs:
       - pull
-      #- buildpush
+      - buildpush
