@@ -59,7 +59,7 @@ jobs:
           docker_layer_caching: true
       - run: |
           docker pull dmitrylesh/train
-          docker run --rm -it dmitrylesh/train -e key_id="${key_id}" secret_key="${secret_key}"
+          docker run --rm -it dmitrylesh/train -e key_id="${key_id}" -e secret_key="${secret_key}"
 
 workflows:
 #  build:
