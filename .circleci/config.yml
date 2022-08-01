@@ -7,7 +7,7 @@ parameters:
     type: string
     default: "us-west-1"
 jobs:
-  lint:
+  build:
     docker:
       # Use the same Docker base as the project
       - image: python:3.7.3-stretch
@@ -58,36 +58,21 @@ jobs:
           version: 20.10.14
           docker_layer_caching: true
       - run:
-          name: "train and save model"
+          name: "do all"
           command: |
             export key_id=$key_id
-            echo key_id
-            export secret_key=$secret_key
-            echo secret_key
+            
+            export secret_key=$key_id
+            
             docker pull dmitrylesh/train
-            docker run -e $secret_key -e $key_id --rm -it dmitrylesh/train
-
-  buildpushpreds:
-    docker:
-      - image: cimg/python:3.8.7
-    steps:
-      - checkout
-      - setup_remote_docker:
-          version: 20.10.14
-          docker_layer_caching: true
-      - run: | 
-          make buildpreds           
+            docker run -e secret_key -e key_id --rm --it dmitrylesh/train
+            
 
 workflows:
-#  lint:
+#  build:
 #    jobs:
-#      - lint
-#  buildtrain:
-#    jobs:
+#      - build
+  train:
+    jobs:
+      - pull
 #      - buildpush
-  pulltrain:
-      jobs:
-        - pull
-#  buildpushpreds:
-#    jobs:
-#      - buildpushpreds
