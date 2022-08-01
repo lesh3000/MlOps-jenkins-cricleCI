@@ -146,6 +146,6 @@ workflows:
       - test #:
  #         requires:
  #           - buildpres
-      - testflask:
+      - testflask #:
 #          requires:
 #            - test
