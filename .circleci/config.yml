@@ -75,7 +75,51 @@ jobs:
           version: 20.10.14
           docker_layer_caching: true
       - run: | 
-          make buildpreds            
+          make buildpreds   
+
+  test:
+    docker:
+      - image: cimg/python:3.8.7
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true
+      - run:
+          name: "train and save model"
+          command: |
+            export key_id=$key_id
+            echo $key_id
+            export secret_key=$secret_key
+            echo $secret_key
+            docker pull dmitrylesh/preds
+            docker run -p 80:8000 -e secret_key -e key_id dmitrylesh/preds
+            PORT=8000
+            echo "Port: $PORT"
+
+            # POST method predict
+            curl -d '{
+               "CHAS":{
+                  "0":0
+               },
+               "RM":{
+                  "0":6.575
+               },
+               "TAX":{
+                  "0":296.0
+               },
+               "PTRATIO":{
+                  "0":15.3
+               },
+               "B":{
+                  "0":396.9
+               },
+               "LSTAT":{
+                  "0":4.98
+               }
+            }'\
+                 -H "Content-Type: application/json" \
+                 -X POST http://localhost:$PORT/predict
 
 workflows:
   train_deploy:

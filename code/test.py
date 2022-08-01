@@ -3,6 +3,7 @@ from flask.logging import create_logger
 import logging
 import boto3
 from io import BytesIO
+import os
 
 import pandas as pd
 from joblib import load
@@ -23,25 +24,30 @@ def home():
 def predict():
     # Logging the input payload
     json_payload = request.json
+    print(json_payload)
     LOG.info(f"JSON payload: \n{json_payload}")
     inference_payload = pd.DataFrame(json_payload)
     LOG.info(f"Inference payload DataFrame: \n{inference_payload}")
     # scale the input
-    df = pd.read_csv("adult.csv", sep=",")[:2]
+    df = pd.read_csv("adult.csv", sep=",")[:5]
+    print(df)
 
     df['income'].replace(['<=50K', '>50K'], [0, 1], inplace=True)
     df.drop('fnlwgt', axis=1, inplace=True)
     df.drop('education.num', axis=1, inplace=True)
     df = df.loc[(df['workclass'] != '?') & (df['occupation'] != '?') & (df['native.country'] != '?')]
     X = df.drop('income', axis=1)
+    print(X)
 
     X_continous = X[['age', 'capital.gain', 'capital.loss', 'hours.per.week']]
     X_categorical = X[['workclass', 'education', 'marital.status', 'occupation', 'relationship', 'race',
                        'sex', 'native.country']]
 
-    X_encoded = pd.get_dummies(X_categorical)
-    data = pd.concat([y, X_continous, X_encoded], axis=1)
 
+
+    X_encoded = pd.get_dummies(X_categorical)
+    data = pd.concat([ X_continous, X_encoded], axis=1)
+    print(data)
 
     predictions= list(logit_model.predict(data))
 
@@ -51,8 +57,16 @@ def predict():
 
 
 if __name__ == "__main__":
+    session = boto3.Session(
+        aws_access_key_id=os.environ['key_id'],
+        aws_secret_access_key=os.environ['secret_key'],
+        region_name="eu-west-1"
+
+    )
+
+    s3 = session.resource('s3')
     with BytesIO() as f:
-        boto3.client("s3").download_fileobj(Bucket="my-train-bucket-hehe-837", Key="model.save", Fileobj=f)
+        s3.download_fileobj(Bucket="my-train-bucket-hehe-837", Key="model.save", Fileobj=f)
         f.seek(0)
 
         logit_model = load(f)
