@@ -39,7 +39,7 @@ jobs:
             make -i lint
 
   pull:
-    docker:
+    machine:
       - image: dmitrylesh/train
         auth:
           username: dmitrylesh
