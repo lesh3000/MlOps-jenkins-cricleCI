@@ -65,7 +65,7 @@ jobs:
             docker pull dmitrylesh/train
             docker run -e $secret_key -e $key_id --rm -it dmitrylesh/train
 
- buildpushpreds:
+  buildpushpreds:
     docker:
       - image: cimg/python:3.8.7
     steps:
