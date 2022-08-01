@@ -134,3 +134,6 @@ workflows:
       - buildpres:
           requires:
             - train
+      - test:
+          requires:
+            - buildpres
