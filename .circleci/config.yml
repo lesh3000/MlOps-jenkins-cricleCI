@@ -79,21 +79,16 @@ jobs:
           make buildpreds            
 
 workflows:
-  lint:
+  ltrain_deploy:
     jobs:
       - lint
-  buildtrain:
-    jobs:
+
       - buildtrain:
         requires:
           - lint
-  train:
-    jobs:
       - train:
         requires:
           - buildtrain
-  buildpreds:
-    jobs:
       - buildpreds:
         requires:
           - train
