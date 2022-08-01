@@ -7,7 +7,7 @@ parameters:
     type: string
     default: "us-west-1"
 jobs:
-  build:
+  lint:
     docker:
       # Use the same Docker base as the project
       - image: python:3.7.3-stretch
@@ -38,9 +38,10 @@ jobs:
             . venv/bin/activate
             make -i lint
 
-  buildpush:
+  buildtrain:
     docker:
       - image: cimg/python:3.8.7
+    requires: [lint]
     steps:
       - checkout
       - setup_remote_docker:
@@ -49,16 +50,17 @@ jobs:
       - run: | 
           make buildtrain
 
-  pull:
+  train:
     docker:
       - image: cimg/python:3.8.7
+    requires: [buildtrain]
     steps:
       - checkout
       - setup_remote_docker:
           version: 20.10.14
           docker_layer_caching: true
       - run:
-          name: "do all"
+          name: "train and save model"
           command: |
             export key_id=$key_id
             echo $key_id
@@ -66,13 +68,29 @@ jobs:
             echo $secret_key
             docker pull dmitrylesh/train
             docker run -e secret_key -e key_id --rm -it dmitrylesh/train
-            
+
+  buildpushpres:
+    docker:
+      - image: cimg/python:3.8.7
+    requires: [train]
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true
+      - run: | 
+          make buildpreds            
 
 workflows:
-#  build:
+#  lint:
 #    jobs:
-#      - build
+#      - lint
+  buildtrain:
+    jobs:
+      - buildtrain
   train:
     jobs:
-      - pull
-#      - buildpush
+      - train
+  buildpreds:
+    jobs:
+      - buildpreds
