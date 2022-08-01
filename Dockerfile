@@ -13,8 +13,11 @@ RUN pip install --upgrade pip && pip install --trusted-host pypi.python.org -r r
 ENV key=$key_id
 RUN echo $key_id
 
-ENV key_id=AKIAXULVIJNCB2J7YHHJ
-ENV secret_key=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
+ENV key_id=key
+ENV secret_key=secret
+ARG entry=preprocessing
+ENV entry_e=$entry
+ENV python=python
 
-
-CMD ["python", "preprocessing.py"]
+RUN echo "python -m $entry_e \$@" > /run_module.sh
+CMD ["/bin/bash", "/run_module.sh"]

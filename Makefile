@@ -9,6 +9,10 @@ install:
 		pip install -r requirements.txt
 buildtrain:
 	sh buildtrain.sh
+
+buildpreds:
+	sh buildtrain.sh
+
 test:
 	# Additional, optional, tests could go here
 	#python -m pytest -vv --cov=myrepolib tests/*.py

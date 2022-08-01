@@ -1,57 +1,59 @@
+from flask import Flask, request, jsonify
+from flask.logging import create_logger
+import logging
+import boto3
+from io import BytesIO
+
 import pandas as pd
-
 from joblib import load
-import json
-import os
-
-from sklearn.metrics import accuracy_score
 
 
-# Set path for the input (model)
-MODEL_DIR = os.environ["MODEL_DIR"]
-model_file = 'logit_model.joblib'
-model_path = os.path.join(MODEL_DIR, model_file)
-
-# Set path for the input (test data)
-PROCESSED_DATA_DIR = os.environ["PROCESSED_DATA_DIR"]
-test_data_file = 'test.csv'
-test_data_path = os.path.join(PROCESSED_DATA_DIR, test_data_file)
+app = Flask(__name__)
+LOG = create_logger(app)
+LOG.setLevel(logging.INFO)
 
 
-
-# Load model
-logit_model = load(model_path)
-
-# Load data
-df = pd.read_csv(test_data_path, sep=",")
+@app.route("/")
+def home():
+    html = "<h3>Sklearn Prediction Home</h3>"
+    return html.format(format)
 
 
-# Split data into dependent and independent variables
-X_test = df.drop('income', axis=1)
-y_test = df['income']
+@app.route("/predict", methods=['POST'])
+def predict():
+    # Logging the input payload
+    json_payload = request.json
+    LOG.info(f"JSON payload: \n{json_payload}")
+    inference_payload = pd.DataFrame(json_payload)
+    LOG.info(f"Inference payload DataFrame: \n{inference_payload}")
+    # scale the input
+    df = pd.read_csv("adult.csv", sep=",")[:2]
 
-# Predict
-logit_predictions = logit_model.predict(X_test)
+    df['income'].replace(['<=50K', '>50K'], [0, 1], inplace=True)
+    df.drop('fnlwgt', axis=1, inplace=True)
+    df.drop('education.num', axis=1, inplace=True)
+    df = df.loc[(df['workclass'] != '?') & (df['occupation'] != '?') & (df['native.country'] != '?')]
+    X = df.drop('income', axis=1)
 
-# Compute test accuracy
-test_logit = accuracy_score(y_test,logit_predictions)
+    X_continous = X[['age', 'capital.gain', 'capital.loss', 'hours.per.week']]
+    X_categorical = X[['workclass', 'education', 'marital.status', 'occupation', 'relationship', 'race',
+                       'sex', 'native.country']]
 
-# Test accuracy to JSON
-test_metadata = {
-    'test_acc': test_logit
-}
-
-
-# Set output path
-RESULTS_DIR = os.environ["RESULTS_DIR"]
-test_results_file = 'test_metadata.json'
-results_path = os.path.join(RESULTS_DIR, test_results_file)
-
-# Serialize and save metadata
-with open(results_path, 'w') as outfile:
-    json.dump(test_metadata, outfile)
+    X_encoded = pd.get_dummies(X_categorical)
+    data = pd.concat([y, X_continous, X_encoded], axis=1)
 
 
+    predictions= list(logit_model.predict(data))
+
+    LOG.info(f"Prediction: \n{predictions}")
+
+    return jsonify({'prediction': predictions})
 
 
+if __name__ == "__main__":
+    with BytesIO() as f:
+        boto3.client("s3").download_fileobj(Bucket="my-train-bucket-hehe-837", Key="model.save", Fileobj=f)
+        f.seek(0)
 
+        logit_model = load(f)
+    app.run(host='0.0.0.0', port=80, debug=True)
