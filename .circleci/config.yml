@@ -57,12 +57,13 @@ jobs:
       - setup_remote_docker:
           version: 20.10.14
           docker_layer_caching: true
-      - run: "do all"
-      - command: |
-          export key_id=$key_id
-          echo $key_id
-#          docker pull dmitrylesh/train
-#          docker run --rm -it dmitrylesh/train
+      - run:
+          name: "do all"
+          command: |
+            export key_id=$key_id
+            echo $key_id
+  #          docker pull dmitrylesh/train
+  #          docker run --rm -it dmitrylesh/train
 
 workflows:
 #  build:
