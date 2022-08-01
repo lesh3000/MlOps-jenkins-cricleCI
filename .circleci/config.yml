@@ -61,9 +61,9 @@ jobs:
           name: "do all"
           command: |
             export key_id=$key_id
-            
-            export secret_key=$key_id
-            
+            echo $key_id
+            export secret_key=$secret_key
+            echo $secret_key
             docker pull dmitrylesh/train
             docker run -e secret_key -e key_id --rm -it dmitrylesh/train
             
