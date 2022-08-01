@@ -70,5 +70,5 @@ workflows:
 #      - build
   train:
     jobs:
-      #- pull
-      - buildpush
+      - pull
+      #- buildpush
