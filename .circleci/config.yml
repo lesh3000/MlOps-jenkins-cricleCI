@@ -38,6 +38,17 @@ jobs:
             . venv/bin/activate
             make -i lint
 
+  buildpush:
+    docker:
+      - image: cimg/python:3.8.7
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true
+      - run: | 
+          make buildtrain
+
   pull:
     docker:
       - image: cimg/python:3.8.7
