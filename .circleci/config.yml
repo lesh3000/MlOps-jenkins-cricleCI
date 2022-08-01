@@ -102,6 +102,7 @@ jobs:
       - run:
           name: "test flask"
           command: |
+            sleep 60
             PORT=8000
             echo "Port: $PORT"
 
@@ -146,5 +147,5 @@ workflows:
  #         requires:
  #           - buildpres
       - testflask:
-          requires:
-            - test
+#          requires:
+#            - test
