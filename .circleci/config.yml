@@ -61,7 +61,7 @@ jobs:
           name: "train and save model"
           command: |
             export key_id=$key_id
-            export secret_key=$key_id
+            export secret_key=$secret_key
             docker pull dmitrylesh/train
             docker run -e $secret_key -e $key_id --rm -it dmitrylesh/train
 
@@ -80,12 +80,12 @@ workflows:
 #  lint:
 #    jobs:
 #      - lint
-  buildtrain:
-    jobs:
-      - buildpush
+#  buildtrain:
+#    jobs:
+#      - buildpush
   pulltrain:
       jobs:
         - pull
-  buildpushpreds:
-    jobs:
-      - buildpushpreds
+#  buildpushpreds:
+#    jobs:
+#      - buildpushpreds
