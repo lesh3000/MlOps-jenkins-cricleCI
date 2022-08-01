@@ -10,11 +10,9 @@ COPY requirements.txt /
 
 RUN pip install --upgrade pip && pip install --trusted-host pypi.python.org -r requirements.txt
 
-ENV key=$key_id
-RUN echo $key_id
 
-ENV key_id=key
-ENV secret_key=secret
+ENV key_id=$key_id
+ENV secret_key=$secret_key
 ARG entry=preprocessing
 ENV entry_e=$entry
 ENV python=python

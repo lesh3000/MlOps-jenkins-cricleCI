@@ -80,9 +80,9 @@ workflows:
 #  lint:
 #    jobs:
 #      - lint
-#  buildtrain:
-#    jobs:
-#      - buildpush
+  buildtrain:
+    jobs:
+      - buildpush
   pulltrain:
       jobs:
         - pull
