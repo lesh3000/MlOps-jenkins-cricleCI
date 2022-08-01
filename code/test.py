@@ -67,9 +67,7 @@ if __name__ == "__main__":
     )
 
     s3 = session.resource('s3')
-    with BytesIO() as f:
-        s3.download_fileobj(Bucket="my-train-bucket-hehe-837", Key="model.sav", Fileobj=f)
-        f.seek(0)
+    s3.Bucket('my-train-bucket-hehe-837').download_file('model/model.sav', 'model.sav')
 
-        logit_model = load(f)
+    logit_model = load('model/model.sav')
     app.run(host='0.0.0.0', port=80, debug=True)
