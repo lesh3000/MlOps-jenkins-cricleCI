@@ -40,15 +40,14 @@ jobs:
 
   pull:
     machine:
-      - image: dmitrylesh/train #$accountid.dkr.ecr.us-west-1.amazonaws.com/train
-          auth:
-            username: dmitrylesh
-            password: $pass
+      image: dmitrylesh/train
+        auth:
+          username: dmitrylesh
+          password: $pass
     steps:
       - checkout
-      - run:
-          name: "Run docker and load model to s3"
-          command: docker run --rm -it dmitrylesh/train
+      - run: docker run --rm -it dmitrylesh/train
+
 workflows:
 #  build:
 #    jobs:
