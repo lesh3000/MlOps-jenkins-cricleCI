@@ -60,8 +60,8 @@ jobs:
       - run:
           name: "do all"
           command: |
-            export key_id=$key_id
-            echo $key_id
+            export key_id_=$key_id
+            echo $key_id_
   #          docker pull dmitrylesh/train
   #          docker run --rm -it dmitrylesh/train
 
