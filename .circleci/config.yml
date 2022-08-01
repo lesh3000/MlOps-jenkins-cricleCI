@@ -94,6 +94,14 @@ jobs:
             echo $secret_key
             docker pull dmitrylesh/preds
             docker run -p 80:8000 -e secret_key -e key_id dmitrylesh/preds
+  testflask:
+    docker:
+      - image: cimg/python:3.8.7
+    steps:
+      - checkout
+      - run:
+          name: "test flask"
+          command: |
             PORT=8000
             echo "Port: $PORT"
 
@@ -131,9 +139,12 @@ workflows:
 #      - train:
 #          requires:
 #            - buildtrain
-      - buildpres #:
+ #     - buildpres #:
  #         requires:
 #            - train
       - test:
           requires:
             - buildpres
+      - testflask:
+          requires:
+            - test
