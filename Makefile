@@ -11,7 +11,7 @@ buildtrain:
 	sh buildtrain.sh
 
 buildpreds:
-	sh buildtrain.sh
+	sh buildpreds.sh
 
 test:
 	# Additional, optional, tests could go here
