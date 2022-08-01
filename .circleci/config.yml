@@ -82,9 +82,9 @@ jobs:
           make buildpreds            
 
 workflows:
-#  lint:
-#    jobs:
-#      - lint
+  lint:
+    jobs:
+      - lint
   buildtrain:
     jobs:
       - buildtrain
