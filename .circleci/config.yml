@@ -40,10 +40,7 @@ jobs:
 
   pull:
     machine:
-      - image: dmitrylesh/train
-        auth:
-          username: dmitrylesh
-          password: $pass
+      image: dmitrylesh/train
     steps:
       - checkout
       - run: docker run --rm -it dmitrylesh/train
