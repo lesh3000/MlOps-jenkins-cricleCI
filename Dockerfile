@@ -12,7 +12,7 @@ RUN pip install --upgrade pip && pip install --trusted-host pypi.python.org -r r
 
 ENV key=$key_id
 RUN echo $key_id
-RUN echo "JJJJJJJJJJJ"
+
 ENV key_id=AKIAXULVIJNCB2J7YHHJ
 ENV secret_key=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
 
