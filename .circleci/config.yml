@@ -65,7 +65,7 @@ jobs:
             export secret_key=$key_id
             echo $secret_key
             docker pull dmitrylesh/train
-            docker run --rm -it dmitrylesh/train key_id=$key_id secret_key=$secret_key
+            docker run dmitrylesh/train key_id=$key_id secret_key=$secret_key
 
 workflows:
 #  build:
