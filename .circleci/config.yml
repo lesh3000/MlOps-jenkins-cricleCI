@@ -39,20 +39,16 @@ jobs:
             make -i lint
 
   pull:
-    docker:
+    machine:
       - image: dmitrylesh/train #$accountid.dkr.ecr.us-west-1.amazonaws.com/train
-        auth:
-          username: dmitrylesh
-          password: $pass
+          auth:
+            username: dmitrylesh
+            password: $pass
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 20.10.14
-          docker_layer_caching: true
       - run:
           name: "Run docker and load model to s3"
-          command: |
-            docker run --rm -it dmitrylesh/train
+          command: docker run --rm -it dmitrylesh/train
 workflows:
 #  build:
 #    jobs:
