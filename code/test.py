@@ -57,16 +57,18 @@ def predict():
 
 
 if __name__ == "__main__":
+    print(os.environ['key_id'])
+    print(os.getenv('key_id'))
     session = boto3.Session(
-        aws_access_key_id=os.environ['key_id'],
-        aws_secret_access_key=os.environ['secret_key'],
-        region_name="eu-west-1"
+        aws_access_key_id= os.environ['key_id'],
+        aws_secret_access_key= os.environ['secret_key'],
+        region_name= "eu-west-1"
 
     )
 
     s3 = session.resource('s3')
     with BytesIO() as f:
-        s3.download_fileobj(Bucket="my-train-bucket-hehe-837", Key="model.save", Fileobj=f)
+        s3.download_fileobj(Bucket="my-train-bucket-hehe-837", Key="model.sav", Fileobj=f)
         f.seek(0)
 
         logit_model = load(f)

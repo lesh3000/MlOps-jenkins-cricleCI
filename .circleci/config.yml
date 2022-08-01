@@ -124,16 +124,16 @@ jobs:
 workflows:
   train_deploy:
     jobs:
-      - lint
-      - buildtrain:
-          requires:
-            - lint
-      - train:
-          requires:
-            - buildtrain
+#      - lint
+#      - buildtrain:
+#          requires:
+#            - lint
+#      - train:
+#          requires:
+#            - buildtrain
       - buildpres:
           requires:
-            - train
+#            - train
       - test:
           requires:
             - buildpres
