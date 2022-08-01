@@ -1,17 +1,62 @@
 version: 2.1
+parameters:
+  accountid:
+    type: string
+    default: "524768791364"
+  region:
+    type: string
+    default: "us-west-1"
 jobs:
   build:
     docker:
-      - image: cimg/go:1.17
+      # Use the same Docker base as the project
+      - image: python:3.7.3-stretch
+    working_directory: ~/proj5
     steps:
       - checkout
-      # ... steps for building/testing app ...
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            make install
+            # Install hadolint
+            wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
+                chmod +x /bin/hadolint
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
+      - run:
+          name: run lint
+          command: |
+            . venv/bin/activate
+            make -i lint
 
+  pull:
+    docker:
+      - image: dmitrylesh/train #$accountid.dkr.ecr.us-west-1.amazonaws.com/train
+        auth:
+          username: dmitrylesh
+          password: $pass
+    steps:
+      - checkout
       - setup_remote_docker:
           version: 20.10.14
           docker_layer_caching: true
-
-      # build and push Docker image
-      - run: |
-          
-          docker build -t circleci-demo-docker:latest .
+      - run:
+          name: "Run docker and load model to s3"
+          command: |
+            docker run --rm -it dmitrylesh/train
+workflows:
+#  build:
+#    jobs:
+#      - build
+  pull:
+    jobs:
+      - pull

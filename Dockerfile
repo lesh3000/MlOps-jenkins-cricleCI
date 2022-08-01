@@ -1,22 +1,15 @@
-FROM jupyter/scipy-notebook
-
-RUN pip install joblib
-
+FROM cimg/python:3.8.7
 
 USER root
-RUN apt-get update && apt-get install -y jq
+WORKDIR /
+RUN mkdir model
 
-RUN mkdir model raw_data processed_data results
+COPY /code /
+COPY adult.csv /
+COPY requirements.txt /
 
-
-ENV RAW_DATA_DIR=/home/jovyan/raw_data
-ENV PROCESSED_DATA_DIR=/home/jovyan/processed_data
-ENV MODEL_DIR=/home/jovyan/model
-ENV RESULTS_DIR=/home/jovyan/results
-ENV RAW_DATA_FILE=adult.csv
+RUN pip install --upgrade pip && pip install --trusted-host pypi.python.org -r requirements.txt
 
 
-COPY adult.csv ./raw_data/adult.csv
-COPY code/preprocessing.py ./preprocessing.py
-COPY code/train.py ./train.py
-#COPY code/test.py ./test.py
+
+CMD ["python", "preprocessing.py"]

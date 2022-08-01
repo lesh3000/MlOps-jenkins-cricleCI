@@ -1,54 +1,56 @@
 import os
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from joblib import dump
 
-# Set path for the input
-RAW_DATA_DIR = os.environ["RAW_DATA_DIR"]
-RAW_DATA_FILE = os.environ["RAW_DATA_FILE"]
-raw_data_path = os.path.join(RAW_DATA_DIR, RAW_DATA_FILE)
+from sklearn.model_selection import StratifiedKFold, cross_val_score
+from sklearn.linear_model import LogisticRegression
+import boto3
 
-# Read dataset
-df = pd.read_csv(raw_data_path, sep=",")
+session = boto3.Session(
+    aws_access_key_id="AKIAXULVIJNCB2J7YHHJ",
+    aws_secret_access_key="KzxFZMPv83aEnh80rAreeBXBGB8Q0tqlKvi8bVee",
+    region_name="eu-west-1"
 
+)
 
+s3 = session.resource('s3')
 
-# Income to binary
-df['income'].replace(['<=50K','>50K'],[0,1], inplace=True) 
-
-# Drop useless variables
+df = pd.read_csv("adult.csv", sep=",")
+df['income'].replace(['<=50K','>50K'],[0,1], inplace=True)
 df.drop('fnlwgt', axis=1, inplace=True)
 df.drop('education.num', axis=1, inplace=True)
-
-# Removing rows with missing data
 df = df.loc[ (df['workclass'] != '?') & (df['occupation'] != '?') & (df['native.country']!= '?')]
-
-
-
-# Split into dependend and independent variables
 X = df.drop('income', axis=1)
 y = df['income'].to_frame()
 
-# Split X into continous variables and categorical variables
-X_continous  = X[['age', 'capital.gain', 'capital.loss', 'hours.per.week']]
 
+X_continous  = X[['age', 'capital.gain', 'capital.loss', 'hours.per.week']]
 X_categorical = X[['workclass', 'education', 'marital.status', 'occupation', 'relationship', 'race',
                    'sex', 'native.country']]
 
-# Get the dummies
 X_encoded = pd.get_dummies(X_categorical)
-
-# Concatenate data
 data = pd.concat([y, X_continous, X_encoded],axis=1)
 
-# Split into train and test
 train, test = train_test_split(data, test_size=0.3, stratify=data['income'])
 
+X_train = train.drop('income', axis=1)
+y_train = train['income']
 
-# Set path to the outputs
-PROCESSED_DATA_DIR = os.environ["PROCESSED_DATA_DIR"]
-train_path = os.path.join(PROCESSED_DATA_DIR, 'train.csv')
-test_path = os.path.join(PROCESSED_DATA_DIR, 'test.csv')
+logit_model = LogisticRegression(max_iter=10000)
+logit_model = logit_model.fit(X_train, y_train)
 
-# Save csv
-train.to_csv(train_path, index=False)
-test.to_csv(test_path,  index=False)
+cv = StratifiedKFold(n_splits=3)
+val_logit = cross_val_score(logit_model, X_train, y_train, cv=cv).mean()
+
+dump(logit_model, "/model/model.sav")
+
+object = s3.Object('my-train-bucket-hehe-837', 'model.sav')
+
+with open('/model/model.sav', 'rb') as data:
+    result = object.put(Body=data)
+print(result)
+
+
+
+
