@@ -60,9 +60,9 @@ jobs:
       - run: |
           docker pull dmitrylesh/train
           export key_id= $key_id
-          echo $key_id
+          echo "${key_id}"
           export secret_key= $secret_key
-          echo $secret_key
+          echo "${secret_key}"
           docker run --rm -it dmitrylesh/train
 
 workflows:
