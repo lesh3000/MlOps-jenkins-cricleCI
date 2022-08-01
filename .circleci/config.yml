@@ -41,7 +41,6 @@ jobs:
   buildtrain:
     docker:
       - image: cimg/python:3.8.7
-    requires: [lint]
     steps:
       - checkout
       - setup_remote_docker:
@@ -53,7 +52,6 @@ jobs:
   train:
     docker:
       - image: cimg/python:3.8.7
-    requires: [buildtrain]
     steps:
       - checkout
       - setup_remote_docker:
@@ -72,7 +70,6 @@ jobs:
   buildpushpres:
     docker:
       - image: cimg/python:3.8.7
-    requires: [train]
     steps:
       - checkout
       - setup_remote_docker:
@@ -88,9 +85,15 @@ workflows:
   buildtrain:
     jobs:
       - buildtrain
+        requires:
+          - lint
   train:
     jobs:
       - train
+        requires:
+          - buildtrain
   buildpreds:
     jobs:
       - buildpreds
+        requires:
+          - train
