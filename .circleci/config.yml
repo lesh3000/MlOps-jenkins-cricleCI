@@ -65,6 +65,7 @@ workflows:
 #  build:
 #    jobs:
 #      - build
-  pull:
+  train:
     jobs:
       - pull
+      - buildpush
