@@ -52,9 +52,6 @@ jobs:
   pull:
     docker:
       - image: cimg/python:3.8.7
-      - environment:
-          key_id: $key_id
-          secret_key: $secret_key
     steps:
       - checkout
       - setup_remote_docker:
