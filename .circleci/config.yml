@@ -84,16 +84,16 @@ workflows:
       - lint
   buildtrain:
     jobs:
-      - buildtrain
+      - buildtrain:
         requires:
           - lint
   train:
     jobs:
-      - train
+      - train:
         requires:
           - buildtrain
   buildpreds:
     jobs:
-      - buildpreds
+      - buildpreds:
         requires:
           - train
