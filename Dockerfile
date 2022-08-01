@@ -12,7 +12,10 @@ RUN pip install --upgrade pip && pip install --trusted-host pypi.python.org -r r
 
 
 ENV key_id=$key_id
+RUN echo $key_id
 ENV secret_key=$secret_key
+RUN echo $secret_key
+
 ARG entry=preprocessing
 ENV entry_e=$entry
 ENV python=python
