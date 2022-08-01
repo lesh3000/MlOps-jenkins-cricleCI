@@ -143,8 +143,8 @@ workflows:
  #         requires:
 #            - train
       - test:
-          requires:
-            - buildpres
+          requires #:
+ #           - buildpres
       - testflask:
           requires:
             - test
