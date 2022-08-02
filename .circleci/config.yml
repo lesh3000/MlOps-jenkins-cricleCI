@@ -1,4 +1,7 @@
 version: 2.1
+orbs:
+  aws-eks: circleci/aws-eks@<<pipeline.parameters.dev-orb-version>>
+  kubernetes: circleci/kubernetes@1.3
 parameters:
   accountid:
     type: string
@@ -93,6 +96,19 @@ jobs:
             export secret_key=$secret_key
             echo $secret_key
             docker pull dmitrylesh/preds
+
+  test-cluster:
+    docker:
+      - image: 'cimg/python:3.10'
+    steps:
+      - kubernetes/install:
+          kubectl-version: v1.22.0
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: mycluster
+      - run:
+          command: |
+            kubectl get services
+         
             
 
 workflows:
@@ -105,9 +121,10 @@ workflows:
 #      - train:
 #          requires:
 #            - buildtrain
-      - buildpres #:
- #         requires:
+#      - buildpres #:
+#          requires:
 #            - train
-      - pullpreds:
-          requires:
-            - buildpres
+#      - pullpreds:
+#          requires:
+#            - buildpres
+      - test-cluster
