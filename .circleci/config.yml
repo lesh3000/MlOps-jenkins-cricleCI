@@ -107,7 +107,7 @@ jobs:
           cluster-name: clustersklearn
       - run:
           command: |
-            kubectl port-forward pod/inference-5547855c4f-vbqkg --address 0.0.0.0 8000:80
+            kubectl apply -f kuba.yaml
 
 workflows:
   train_deploy:
