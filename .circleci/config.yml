@@ -104,7 +104,7 @@ jobs:
       - kubernetes/install:
           kubectl-version: v1.22.0
       - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-name: mycluster
+          cluster-name: clustersklearn
       - run:
           command: |
             kubectl get services
