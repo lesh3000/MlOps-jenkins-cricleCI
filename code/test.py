@@ -2,9 +2,9 @@ from flask import Flask, request, jsonify
 from flask.logging import create_logger
 import logging
 import boto3
-from io import BytesIO
-import os
 
+import os
+import json
 import pandas as pd
 from joblib import load
 
@@ -24,45 +24,24 @@ def home():
 def predict():
     # Logging the input payload
     json_payload = request.json
-    print(json_payload)
+
     LOG.info(f"JSON payload: \n{json_payload}")
-    inference_payload = pd.DataFrame(json_payload)
-    LOG.info(f"Inference payload DataFrame: \n{inference_payload}")
-    # scale the input
-    df = pd.read_csv("adult.csv", sep=",")[:5]
-    print(df)
-
-    df['income'].replace(['<=50K', '>50K'], [0, 1], inplace=True)
-    df.drop('fnlwgt', axis=1, inplace=True)
-    df.drop('education.num', axis=1, inplace=True)
-    df = df.loc[(df['workclass'] != '?') & (df['occupation'] != '?') & (df['native.country'] != '?')]
-    X = df.drop('income', axis=1)
-    print(X)
-
-    X_continous = X[['age', 'capital.gain', 'capital.loss', 'hours.per.week']]
-    X_categorical = X[['workclass', 'education', 'marital.status', 'occupation', 'relationship', 'race',
-                       'sex', 'native.country']]
+    inference_payload = pd.DataFrame.from_dict(json_payload)
 
 
-
-    X_encoded = pd.get_dummies(X_categorical)
-    data = pd.concat([ X_continous, X_encoded], axis=1)
-    print(data)
-
-    predictions= list(logit_model.predict(data))
+    predictions= logit_model.predict(inference_payload)
 
     LOG.info(f"Prediction: \n{predictions}")
 
-    return jsonify({'prediction': predictions})
+    return json.dumps({'prediction': str(predictions[0])})
 
 
 if __name__ == "__main__":
 
-    s3= boto3.client('s3', region_name='eu-west-1', aws_access_key_id=os.environ['key_id'],
-                             aws_secret_access_key=os.environ['secret_key'])
-    with BytesIO() as f:
-        s3.download_fileobj(Bucket="my-train-bucket-hehe-837", Key="model.sav", Fileobj=f)
-        f.seek(0)
-
-        logit_model = load(f)
+    s3= boto3.client('s3', aws_access_key_id=os.environ["key_id"],
+                             aws_secret_access_key=os.environ["secret_key"])
+    model_path="model.sav"
+    s3.download_file('my-train-bucket-hehe-837',  model_path, 'model.sav')
+    logit_model = load(model_path)
+    LOG.info(f"model loaded")
     app.run(host='0.0.0.0', port=80, debug=True)
