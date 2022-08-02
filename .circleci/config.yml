@@ -77,7 +77,7 @@ jobs:
       - run: | 
           make buildpreds   
 
-  test:
+  pullpreds:
     docker:
       - image: cimg/python:3.8.7
     steps:
@@ -93,42 +93,7 @@ jobs:
             export secret_key=$secret_key
             echo $secret_key
             docker pull dmitrylesh/preds
-            docker run -p 80:8000 -e secret_key -e key_id dmitrylesh/preds
-  testflask:
-    docker:
-      - image: cimg/python:3.8.7
-    steps:
-      - checkout
-      - run:
-          name: "test flask"
-          command: |
-            sleep 60
-            PORT=80
-            echo "Port: $PORT"
-
-            # POST method predict
-            curl -d '{
-               "CHAS":{
-                  "0":0
-               },
-               "RM":{
-                  "0":6.575
-               },
-               "TAX":{
-                  "0":296.0
-               },
-               "PTRATIO":{
-                  "0":15.3
-               },
-               "B":{
-                  "0":396.9
-               },
-               "LSTAT":{
-                  "0":4.98
-               }
-            }'\
-                 -H "Content-Type: application/json" \
-                 -X POST http://localhost:$PORT/predict
+            
 
 workflows:
   train_deploy:
@@ -140,12 +105,9 @@ workflows:
 #      - train:
 #          requires:
 #            - buildtrain
- #     - buildpres #:
+      - buildpres #:
  #         requires:
 #            - train
-      - test #:
- #         requires:
- #           - buildpres
-      - testflask #:
-#          requires:
-#            - test
+      - pullpreds:
+          requires:
+            - buildpres
