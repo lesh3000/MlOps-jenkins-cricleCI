@@ -108,8 +108,9 @@ jobs:
       - run:
           command: |
             kubectl get services
-            kubectl create deploy inference --image=dmitrylesh/preds
-            
+            kubectl create deploy inference1 --image=dmitrylesh/preds
+            kubectl create service nodeport inference1 --http=8000:80
+            #kubectl port-forward pod/${pod} --address 0.0.0.0 8000:80
          
             
 
