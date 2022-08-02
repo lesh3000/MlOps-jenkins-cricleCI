@@ -107,6 +107,7 @@ jobs:
           cluster-name: clustersklearn
       - run:
           command: |
+            kubectl get services
             kubectl describe nodes
 
 workflows:
