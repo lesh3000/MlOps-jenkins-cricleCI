@@ -107,7 +107,7 @@ jobs:
           cluster-name: clustersklearn
       - run:
           command: |
-            kubectl apply -f kuba.yaml
+            kubectl describe nodes
 
 workflows:
   train_deploy:
