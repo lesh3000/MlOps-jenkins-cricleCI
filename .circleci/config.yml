@@ -108,14 +108,9 @@ jobs:
       - run:
           command: |
             kubectl get services
-            #kubectl create deploy inference1 --image=dmitrylesh/preds
             pod=$(kubectl get pod --no-headers -o custom-columns=":metadata.name")
-
             echo "pod name: ${pod}"
-# Port forward
             kubectl port-forward pod/${pod} --address 0.0.0.0 8000:80
-         
-            
 
 workflows:
   train_deploy:
