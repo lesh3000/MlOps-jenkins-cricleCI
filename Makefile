@@ -26,5 +26,12 @@ lint:
 	# This should be run from inside a virtualenv
 	pylint --disable=R,C,W1203,W1202,W1514 ./code
 
+createeks:
+	aws cloudformation create-stack \
+  --stack-name eks \
+  --template-body file://eks.yml \
+  --region us-west-1 --capabilities CAPABILITY_IAM
+
+
 
 all: install lint test
