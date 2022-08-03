@@ -114,12 +114,12 @@ jobs:
       - image: 'cimg/python:3.10'
     steps:
       - kubernetes/install:
-          kubectl-version: v1.22.0
+          kubectl-version: v1.21
       - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-name: 'ekscreate'
+          cluster-name: EKS
       - run:
           command: |
-            kubectl get namespaces
+            kubectl get pods
 
   create-deployment:
     docker:
@@ -127,7 +127,7 @@ jobs:
     steps:
       - checkout
       - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-name: ekscreate
+          cluster-name: EKS
           install-kubectl: true
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
