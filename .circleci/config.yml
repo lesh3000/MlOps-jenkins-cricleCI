@@ -114,9 +114,9 @@ jobs:
       - image: 'cimg/python:3.10'
     steps:
       - kubernetes/install:
-          kubectl-version: v1.21
+          kubectl-version: v1.22.0
       - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-name: EKS
+          cluster-name: 'EKS'
       - run:
           command: |
             kubectl get namespaces
@@ -127,7 +127,7 @@ jobs:
     steps:
       - checkout
       - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-name: EKS
+          cluster-name: 'EKS s'
           install-kubectl: true
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
