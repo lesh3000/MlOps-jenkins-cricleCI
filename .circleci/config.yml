@@ -123,4 +123,4 @@ workflows:
 #      - pullpreds:
 #          requires:
 #            - buildpres
-      - test-cluster
+      - deploy-cfn
