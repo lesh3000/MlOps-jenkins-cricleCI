@@ -114,12 +114,12 @@ jobs:
       - image: 'cimg/python:3.10'
     steps:
       - kubernetes/install:
-          kubectl-version: v1.22
+          kubectl-version: v1.21
       - aws-eks/update-kubeconfig-with-authenticator:
           cluster-name: EKS
       - run:
-          command:
-            kubectl get pods --all-namespaces
+          command: |
+            kubectl get namespaces
 
   create-deployment:
     docker:
