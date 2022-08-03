@@ -1,21 +1,31 @@
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: sklearn
+  name: sklearn-inference
   labels:
-    app: inference
+    app: sklearn-inference
 spec:
   selector:
     matchLabels:
-      app: inference
-  replicas: 2
+      app: sklearn-inference
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
   template:
     metadata:
       labels:
-        app: inference
+        app: sklearn-inference
     spec:
       containers:
       - name: dmitrylesh
         image: dmitrylesh/preds
         ports:
         - containerPort: 80
+        env:
+          - name: key_id
+            value: $key_id
+          - name: secret_key
+            value: $secret_key
