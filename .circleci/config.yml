@@ -134,15 +134,14 @@ jobs:
           get-rollout-status: false
           resource-file-path: deployment.yaml
           resource-name: deployment
-      - kubernetes/create-or-update-resource:
-          get-rollout-status: true
-          resource-file-path: service.yaml
-          resource-name: service
+      - run:
+          kubectl create -f service.yaml
+
 
 workflows:
   train_deploy:
     jobs:
-      - lint
+#      - lint
 #      - buildtrain:
 #          requires:
 #            - lint
