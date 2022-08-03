@@ -28,7 +28,7 @@ lint:
 
 createeks:
 	aws cloudformation create-stack \
-  --stack-name eks \
+  --stack-name ekscreate \
   --template-body file://eks.yml \
   --region us-west-1 --capabilities CAPABILITY_IAM
 
