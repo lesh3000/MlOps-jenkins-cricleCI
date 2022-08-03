@@ -119,7 +119,7 @@ jobs:
           cluster-name: EKS
       - run:
           command: |
-            kubectl get pods
+            kubectl get pods --all-namespaces
 
   create-deployment:
     docker:
