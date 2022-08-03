@@ -119,7 +119,7 @@ jobs:
           cluster-name: 'ekscreate'
       - run:
           command: |
-            kubectl get services
+            kubectl get nodes
 
   create-deployment:
     docker:
