@@ -26,6 +26,6 @@ spec:
         - containerPort: 80
         env:
           - name: key_id
-            value: $(key_id)
+            value: "$(key_id)"
           - name: secret_key
-            value: $(secret_key)
+            value: "$(secret_key)"
