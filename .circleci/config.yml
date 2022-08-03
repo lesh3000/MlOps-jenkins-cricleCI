@@ -131,7 +131,7 @@ jobs:
           cluster-name: 'EKS'
           install-kubectl: true
       - kubernetes/create-or-update-resource:
-          get-rollout-status: true
+          get-rollout-status: false
           resource-file-path: deployment.yaml
           resource-name: deployment
       - kubernetes/create-or-update-resource:
