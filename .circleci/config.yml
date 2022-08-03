@@ -1,5 +1,6 @@
 version: 2.1
 orbs:
+  aws-eks: circleci/aws-eks@2.2.0
   aws-cli: circleci/aws-cli@1.4.0
   kubernetes: circleci/kubernetes@1.3
 
