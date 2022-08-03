@@ -32,6 +32,4 @@ createeks:
   --template-body file://eks.yml \
   --region us-west-1 --capabilities CAPABILITY_IAM
 
-
-
 all: install lint test
