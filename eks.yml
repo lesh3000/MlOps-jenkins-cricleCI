@@ -30,13 +30,15 @@
 
     EKSIAMRoleName:
       Type: String
-      Default: EKSClusterRole
+      Default: EKSClusterRolecluster
       Description: The name of the IAM role for the EKS service to assume.
 
     EKSKeyPair:
       Type: "AWS::EC2::KeyPair::KeyName"
-      Default: "my-eks-key"
+      Default: "eks"
       Description: The name of Key Pair to etasblish connection with Worker Node.
+
+
 
     VpcBlock:
       Type: String
@@ -104,6 +106,7 @@
         ec2: ec2.amazonaws.com
 
   Resources:
+
     eksVPC:
       Type: AWS::EC2::VPC
       Properties:
@@ -217,6 +220,7 @@
         RoleName: !Ref EKSIAMRoleName
         ManagedPolicyArns:
           - arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
+          - arn:aws:iam::aws:policy/AmazonEKSServicePolicy
 
     eksCluster:
       Type: AWS::EKS::Cluster

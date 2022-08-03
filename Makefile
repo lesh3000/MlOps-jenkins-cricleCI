@@ -30,6 +30,6 @@ createeks:
 	aws cloudformation create-stack \
   --stack-name ekscreate \
   --template-body file://eks.yml \
-  --region us-west-1 --capabilities CAPABILITY_IAM
+  --region us-west-1 --capabilities CAPABILITY_NAMED_IAM
 
 all: install lint test
