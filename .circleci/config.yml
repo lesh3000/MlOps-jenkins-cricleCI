@@ -119,7 +119,7 @@ jobs:
           cluster-name: 'ekscreate'
       - run:
           command: |
-            kubectl get nodes
+            kubectl get namespaces
 
   create-deployment:
     docker:
