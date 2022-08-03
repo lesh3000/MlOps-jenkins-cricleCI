@@ -120,7 +120,20 @@ jobs:
       - run:
           command: |
             kubectl get services
-          name: Test cluster
+
+  create-deployment:
+    docker:
+      - image: 'cimg/python:3.10'
+    steps:
+      - checkout
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: ekscreate
+          install-kubectl: true
+      - kubernetes/create-or-update-resource:
+          get-rollout-status: true
+          resource-file-path: deployment.yaml
+          resource-name: deployment
+
 workflows:
   train_deploy:
     jobs:
@@ -139,3 +152,4 @@ workflows:
 #            - buildpres
 #      - deploy-cfn
       - test-cluster
+      - create-deployment
