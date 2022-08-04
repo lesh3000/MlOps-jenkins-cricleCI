@@ -8,7 +8,8 @@ from sklearn.linear_model import LogisticRegression
 import boto3
 
 
-print(f'len len{os.environ["key_id"]} len{os.environ["secret_key"]}')
+print(
+    f'len len{os.environ["key_id"]} len{os.environ["secret_key"]}')
 session = boto3.Session(
     aws_access_key_id=os.environ['key_id'],
     aws_secret_access_key=os.environ['secret_key'],
