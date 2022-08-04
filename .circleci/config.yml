@@ -41,7 +41,7 @@ jobs:
           name: run lint
           command: |
             . venv/bin/activate
-            make -i lint
+            make lint
 
   buildtrain:
     docker:
