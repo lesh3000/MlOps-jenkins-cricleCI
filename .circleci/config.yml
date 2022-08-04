@@ -150,7 +150,7 @@ jobs:
           resource-file-path: deployment.yaml
           resource-name: deployment
       - run:
-          kubectl create -f service.yaml
+          kubectl apply -f service.yaml
 
 
 workflows:
