@@ -156,22 +156,22 @@ jobs:
 workflows:
   train_deploy:
     jobs:
-#      - lint
-#      - buildtrain:
-#          requires:
-#            - lint
-#      - train:
-#          requires:
-#            - buildtrain
-#      - buildpres:
-#          requires:
-#            - train
-#      - test-cluster:
-#          requires:
-#            - buildpres
-      - create-deployment #:
-#          requires:
-#            - test-cluster
-#      - test-service:
-#          requires:
-#            - create-deployment
+      - lint
+      - buildtrain:
+          requires:
+            - lint
+      - train:
+          requires:
+            - buildtrain
+      - buildpres:
+          requires:
+            - train
+      - test-cluster:
+          requires:
+            - buildpres
+      - create-deployment:
+          requires:
+            - test-cluster
+      - test-service:
+          requires:
+            - create-deployment
