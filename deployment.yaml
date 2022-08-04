@@ -26,6 +26,6 @@ spec:
         - containerPort: 80
         env:
           - name: key_id
-            value: "AKIAXULVIJNCBJ47US44"
+            value: $(key_id)
           - name: secret_key
-            value: "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"
+            value: $(secret_key)

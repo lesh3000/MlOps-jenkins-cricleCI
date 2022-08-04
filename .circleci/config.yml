@@ -108,8 +108,19 @@ jobs:
           name: Deploy Cloudformation Template with new Docker image
           command: |
             make createeks
-
   test-cluster:
+    docker:
+      - image: 'cimg/python:3.10'
+    steps:
+      - kubernetes/install:
+          kubectl-version: v1.21.0
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: 'EKS'
+      - run:
+          command: |
+            kubectl get nodes
+
+  test-service:
     docker:
       - image: 'cimg/python:3.10'
     steps:
@@ -126,6 +137,11 @@ jobs:
       - image: 'cimg/python:3.10'
     steps:
       - checkout
+      - run: |
+          export key_id=$key_id
+          echo $key_id
+          export secret_key=$secret_key
+          echo $secret_key
       - aws-eks/update-kubeconfig-with-authenticator:
           cluster-name: 'EKS'
           install-kubectl: true
@@ -140,7 +156,7 @@ jobs:
 workflows:
   train_deploy:
     jobs:
-      - lint
+#      - lint
 #      - buildtrain:
 #          requires:
 #            - lint
@@ -150,7 +166,12 @@ workflows:
 #      - buildpres:
 #          requires:
 #            - train
-      - create-deployment
+#      - test-cluster:
+#          requires:
+#            - buildpres
+      - create-deployment #:
+#          requires:
+#            - test-cluster
+      - test-service:
           requires:
-            - buildpres
-      - test-cluster
+            - create-deployment
