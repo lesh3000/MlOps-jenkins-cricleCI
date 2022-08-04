@@ -9,7 +9,7 @@ spec:
   externalTrafficPolicy: Local
   ports:
   - name: http
-    nodePort: 31235
+    nodePort: 31236
     port: 80
     protocol: TCP
     targetPort: 80
