@@ -131,7 +131,6 @@ jobs:
       - run:
           command: |
             kubectl get service sklearn-inference
-
   create-deployment:
     docker:
       - image: 'cimg/python:3.10'
