@@ -9,9 +9,10 @@ spec:
   externalTrafficPolicy: Local
   ports:
   - name: http
+    nodePort: 31234
     port: 80
     protocol: TCP
     targetPort: 80
   selector:
     app: sklearn-inference
-  type: NodePort
+  type: LoadBalancer

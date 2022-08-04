@@ -119,8 +119,7 @@ jobs:
           cluster-name: 'EKS'
       - run:
           command: |
-            kubectl config view
-            kubectl get services
+            kubectl get service sklearn-inference
 
   create-deployment:
     docker:
