@@ -141,18 +141,16 @@ workflows:
   train_deploy:
     jobs:
       - lint
-      - buildtrain:
-          requires:
-            - lint
-      - train:
-          requires:
-            - buildtrain
-      - buildpres #:
-          requires:
-            - train
-      - pullpreds:
+#      - buildtrain:
+#          requires:
+#            - lint
+#      - train:
+#          requires:
+#            - buildtrain
+#      - buildpres:
+#          requires:
+#            - train
+      - create-deployment
           requires:
             - buildpres
-      - deploy-cfn
       - test-cluster
-      - create-deployment
