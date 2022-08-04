@@ -21,10 +21,10 @@ test:
 lint:
 	# See local hadolint install instructions:   https://github.com/hadolint/hadolint
 	# This is linter for Dockerfiles
-	hadolint Dockerfile
+	hadolint --ignore DL3013 --ignore DL3002 Dockerfile
 	# This is a linter for Python source code linter: https://www.pylint.org/
 	# This should be run from inside a virtualenv
-	pylint --disable=R,C,W1203,W1202,W1514,DL3013 ./code
+	pylint --disable=R,C,W1203,W1202,W1514 ./code
 
 createeks:
 	aws cloudformation create-stack \
