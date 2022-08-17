@@ -1,34 +1,39 @@
-pipeline {
-  environment {
-    imagename = "sklearn"
-     credentials = credentialsId: "docker"
-  } 
-  agent any
-  stages {
-    stage('Cloning Git') {
-      steps {
-                checkout scm
+pipeline{
 
-      }
-    }
-    stage('Building image') {
-      steps{
-        script {
-          dockerImage = docker.build imagename
-        }
-      }
-    }
-   
-stage('Deploy Master Image') {
-      steps{
-        script {
-          docker.withRegistry("dmitrylesh/sklearn", credentials) {     
-            dockerImage.push("$BUILD_NUMBER")
-             dockerImage.push('latest')
+	agent any
 
-          }
-        }
-      }
-    }
+	environment {
+		DOCKERHUB_CREDENTIALS=credentials('docker')
+	}
 
-} //end of pipeline
+	stages {
+
+		stage('Build') {
+
+			steps {
+				sh 'docker build -t dmitrylesh/sklearn:latest .'
+			}
+		}
+
+		stage('Login') {
+
+			steps {
+				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+			}
+		}
+
+		stage('Push') {
+
+			steps {
+				sh 'docker push dmitrylesh/sklearn:latest'
+			}
+		}
+	}
+
+	post {
+		always {
+			sh 'docker logout'
+		}
+	}
+
+}
