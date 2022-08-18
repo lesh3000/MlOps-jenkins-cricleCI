@@ -1,3 +1,6 @@
+def value():
+    echo docker ps -aq
+
 pipeline {
   environment {
     registry = "dmitrylesh/sklearn"
@@ -16,9 +19,9 @@ pipeline {
     stage('Remove Unused docker image 1') {
       steps{
         script {
-                 h=$(docker ps -aq)
+                 
             }
-        sh "docker rm -vf ${h}"
+        sh "docker rm -vf ${value()}"
       }
     }
     stage('Building image') {
