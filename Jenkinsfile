@@ -1,5 +1,5 @@
 def value(){
-    return sh(script: docker ps -aq, returnStdout: true).trim()
+    return sh(script: "docker ps -aq", returnStdout: true).trim()
 }
 
 pipeline {
