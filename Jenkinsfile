@@ -18,7 +18,6 @@ pipeline {
         sh "docker rm -vf $(docker ps -aq)"
       }
     }
-    
     stage('Building image') {
       steps{
         script {
