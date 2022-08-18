@@ -13,7 +13,7 @@ pipeline {
         checkout scm
       }
     }
-    stage('Remove Unused docker image') {
+    stage('Remove Unused docker image 1') {
       steps{
         sh "docker rm -vf ${docker ps -aq}"
       }
