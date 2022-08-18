@@ -1,5 +1,5 @@
 def value(){
-    echo docker ps -aq
+    return docker ps -aq
 }
 
 pipeline {
