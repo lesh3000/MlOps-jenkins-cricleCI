@@ -37,8 +37,7 @@ pipeline {
      stage('pull image and train model') {
       steps{
         sh "docker pull $registry:$BUILD_NUMBER"
-        sh "export env.key_id=$USER_CREDENTIALS_USR"
-        sh "echo $env.key_id"
+        sh "export key_id=$USER_CREDENTIALS_USR"
         sh "export $USER_CREDENTIALS_PSW > env.secret_key"
         sh "docker run -e secret_key -e key-id --rm -it $registry:$BUILD_NUMBER"
       }
