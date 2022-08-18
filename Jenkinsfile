@@ -17,13 +17,13 @@ pipeline {
         checkout scm
       }
     }
-    stage('Remove all') {
-        steps{
+//     stage('Remove all') {
+//         steps{
 
-        sh "docker rm -vf ${value()}"
-        sh "docker rmi -f ${all()}"
-      }
-    }
+//         sh "docker rm -vf ${value()}"
+//         sh "docker rmi -f ${all()}"
+//       }
+//     }
     stage('Building image') {
       steps{
         script {
