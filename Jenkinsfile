@@ -32,6 +32,14 @@ pipeline {
         sh "docker rmi $registry:$BUILD_NUMBER"
       }
     }
+     stage('pull image and train model') {
+      steps{
+        sh "docker pull $registry:$BUILD_NUMBER"
+        sh "export key_id=$USER_CREDENTIALS_USR"
+        sh "export secret_key=$USER_CREDENTIALS_PSW"
+        sh "docker run -e $secret_key -e $key-id --rm -it dmitrylesh/train"
+      }
+    }
   }
 }
 
