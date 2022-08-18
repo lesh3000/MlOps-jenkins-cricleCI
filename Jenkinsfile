@@ -2,6 +2,10 @@ def value(){
     return sh(script: "docker ps -aq", returnStdout: true).trim()
 }
 
+def all(){
+    return sh(script: "docker images -aq", returnStdout: true).trim()
+}
+
 pipeline {
   environment {
     registry = "dmitrylesh/sklearn"
@@ -17,10 +21,11 @@ pipeline {
         checkout scm
       }
     }
-    stage('Remove Unused docker image 1') {
+    stage('Remove all') {
         steps{
 
         sh "docker rm -vf ${value()}"
+        sh "docker rmi -f ${all()}"
       }
     }
     stage('Building image') {
