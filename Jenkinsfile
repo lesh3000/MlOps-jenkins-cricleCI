@@ -15,7 +15,8 @@ pipeline {
     }
     stage('Remove Unused docker image 1') {
       steps{
-        sh "docker rm -vf ${docker ps -aq}"
+        sh "h=$(docker ps -aq)"
+        sh "docker rm -vf ${h}"
       }
     }
     stage('Building image') {
