@@ -47,7 +47,7 @@ val_logit = cross_val_score(logit_model, X_train, y_train, cv=cv).mean()
 
 dump(logit_model, "/model/model.sav")
 
-obj = s3.Object('my-train-bucket-hehe-837', 'model.sav')
+obj = s3.Object('my-train-bucket-hehe-8378', 'model.sav')
 
 with open('/model/model.sav', 'rb') as data:
     result = obj.put(Body=data)
