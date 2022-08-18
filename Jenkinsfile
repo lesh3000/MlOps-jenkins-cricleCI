@@ -2,10 +2,6 @@ def value(){
     return sh(script: "docker ps -aq", returnStdout: true).trim()
 }
 
-def all(){
-    return sh(script: "docker images -q", returnStdout: true).trim()
-}
-
 pipeline {
   environment {
     registry = "dmitrylesh/sklearn"
@@ -53,6 +49,11 @@ pipeline {
       steps{
         sh "docker pull $registry:$BUILD_NUMBER"
         sh "docker run -e secret_key=$USER_CREDENTIALS_PSW -e key_id=$USER_CREDENTIALS_USR --rm $registry:$BUILD_NUMBER"
+      }
+    }
+      stage('Remove Unused docker image 2') {
+      steps{
+        sh "docker rmi $registry:$BUILD_NUMBER"
       }
     }
   }
