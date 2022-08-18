@@ -3,7 +3,7 @@ def value(){
 }
 
 def all(){
-    return sh(script: "docker images -aq", returnStdout: true).trim()
+    return sh(script: "docker images -q", returnStdout: true).trim()
 }
 
 pipeline {
