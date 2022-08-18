@@ -1,5 +1,6 @@
-def value():
+def value(){
     echo docker ps -aq
+}
 
 pipeline {
   environment {
