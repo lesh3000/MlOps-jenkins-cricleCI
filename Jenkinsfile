@@ -39,6 +39,7 @@ pipeline {
         sh "docker pull $registry:$BUILD_NUMBER"
         sh "export key_id=$USER_CREDENTIALS_USR"
         sh "export secret_key=$USER_CREDENTIALS_PSW"
+        sh "echo ${key_id}"
         sh "docker run -e secret_key -e key_id --rm $registry:$BUILD_NUMBER"
       }
     }
